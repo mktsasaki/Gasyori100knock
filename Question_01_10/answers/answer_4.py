@@ -43,7 +43,7 @@ def otsu_binarization(img, th=128):
 
 
 # Read image
-img = cv2.imread("Question_01_10/imori.jpg").astype(np.float32)
+img = cv2.imread("imori.jpg").astype(np.float32)
 
 
 # Grayscale
