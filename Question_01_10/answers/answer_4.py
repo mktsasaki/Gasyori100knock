@@ -16,8 +16,9 @@ def BGR2GRAY(img):
 
 # Otsu Binalization
 def otsu_binarization(img, th=128):
-	imax_sigma = 0
+	max_sigma = 0
 	max_t = 0
+	H, W = img.shape
 
 	# determine threshold
 	for _t in range(1, 255):
@@ -49,7 +50,7 @@ img = cv2.imread("imori.jpg").astype(np.float32)
 out = BGR2GRAY(img)
 
 # Otsu's binarization
-out = otsu_binalization(out)
+out = otsu_binarization(out)
 
 # Save result
 cv2.imwrite("out.jpg", out)
