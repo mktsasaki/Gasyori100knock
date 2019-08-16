@@ -14,7 +14,7 @@ def BGR2GRAY(img):
 
 	return out
 
-# Otsu Binalization
+# Otsu Binarization
 def otsu_binarization(img, th=128):
 	max_sigma = 0
 	max_t = 0
