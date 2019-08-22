@@ -13,7 +13,7 @@ r = img[:, :, 2].copy()
 gray = 0.2126 * r + 0.7152 * g + 0.0722 * b
 gray = gray.astype(np.uint8)
 
-# sobel Filter
+# Laplacian Filter
 K_size = 3
 
 ## Zero padding
@@ -22,7 +22,7 @@ out = np.zeros((H + pad*2, W + pad*2), dtype=np.float)
 out[pad:pad+H, pad:pad+W] = gray.copy().astype(np.float)
 tmp = out.copy()
 
-## Laplacian vertical
+## Laplacian Filter
 K = [[0., 1., 0.],[1., -4., 1.], [0., 1., 0.]]
 
 for y in range(H):

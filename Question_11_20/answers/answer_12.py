@@ -6,11 +6,11 @@ img = cv2.imread("imori.jpg")
 H, W, C = img.shape
 
 
-# Median Filter
+# Motion Filter
 K_size = 3
 
-K = np.diag( [1] * K_size ).astype(np.float)
-K /= K_size
+K = np.diag( [1] * K_size ).astype(np.float) # 対角行列の作成
+K /= K_size # 正規化
 
 ## Zero padding
 pad = K_size // 2

@@ -6,7 +6,7 @@ img = cv2.imread("imori.jpg")
 H, W, C = img.shape
 
 
-# Median Filter
+# Mean Filter
 K_size = 3
 
 ## Zero padding

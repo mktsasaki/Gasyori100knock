@@ -13,7 +13,7 @@ r = img[:, :, 2].copy()
 gray = 0.2126 * r + 0.7152 * g + 0.0722 * b
 gray = gray.astype(np.uint8)
 
-# sobel Filter
+# Derivation Filter
 K_size = 3
 
 ## Zero padding

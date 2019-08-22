@@ -13,7 +13,7 @@ r = img[:, :, 2].copy()
 gray = 0.2126 * r + 0.7152 * g + 0.0722 * b
 gray = gray.astype(np.uint8)
 
-# sobel Filter
+# Prewitt Filter
 K_size = 3
 
 ## Zero padding
@@ -22,9 +22,9 @@ out = np.zeros((H + pad*2, W + pad*2), dtype=np.float)
 out[pad:pad+H, pad:pad+W] = gray.copy().astype(np.float)
 tmp = out.copy()
 
-## Sobel vertical
+## Prewitt vertical
 K = [[-1., -1., -1.],[0., 0., 0.], [1., 1., 1.]]
-## Sobel horizontal
+## Prewitt horizontal
 #K = [[-1., 0., 1.],[-1., 0., 1.],[-1., 0., 1.]]
 
 for y in range(H):
