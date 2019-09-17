@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 
 
 # Bi-cubic interpolation
+# まとめとしては
+# http://imagingsolution.blog.fc2.com/blog-entry-142.html
+# を観ると良いです。
 def bc_interpolate(img, ax=1., ay=1.):
 	H, W, C = img.shape
 
@@ -24,14 +27,14 @@ def bc_interpolate(img, ax=1., ay=1.):
 	iy = np.minimum(iy, H-1)
 
 	# get distance of each position of original image
-	dx2 = x - ix
-	dy2 = y - iy
-	dx1 = dx2 + 1
-	dy1 = dy2 + 1
-	dx3 = 1 - dx2
-	dy3 = 1 - dy2
-	dx4 = 1 + dx3
-	dy4 = 1 + dy3
+	dx2 = x - ix 	# 4x4の2列目の格子点との距離
+	dy2 = y - iy 	# 4x4の2行目の格子点との距離
+	dx1 = dx2 + 1 	# 4x4の1列目の格子点との距離
+	dy1 = dy2 + 1 	# 4x4の1行目の格子点との距離
+	dx3 = 1 - dx2 	# 4x4の3列目の格子点との距離
+	dy3 = 1 - dy2 	# 4x4の3行目の格子点との距離
+	dx4 = 1 + dx3 	# 4x4の4列目の格子点との距離
+	dy4 = 1 + dy3 	# 4x4の4行目の格子点との距離
 
 	dxs = [dx1, dx2, dx3, dx4]
 	dys = [dy1, dy2, dy3, dy4]
@@ -56,8 +59,12 @@ def bc_interpolate(img, ax=1., ay=1.):
 			ind_x = np.minimum(np.maximum(ix + i, 0), W-1)
 			ind_y = np.minimum(np.maximum(iy + j, 0), H-1)
 
-			wx = weight(dxs[i+1])
-			wy = weight(dys[j+1])
+			wx = weight(dxs[i+1]) # i=-1から始まっているので+1して0〜3にしている
+			wy = weight(dys[j+1]) # j=-1から始まっているので+1して0〜3にしている
+			# numpy.expand_dims : データの総数を変えずに次元を1つ増やします。
+			# axisは増やした次元の軸を入れる位置で、データの総数が変わらない関係上1となります。
+			# 例えば(2,3)の2次元データをこれで拡張すると3次元になりますが、axis=-1を指定した場合
+			# 最後の次元に1が入るので(2,3,1)の3次元データになります。
 			wx = np.repeat(np.expand_dims(wx, axis=-1), 3, axis=-1)
 			wy = np.repeat(np.expand_dims(wy, axis=-1), 3, axis=-1)
 

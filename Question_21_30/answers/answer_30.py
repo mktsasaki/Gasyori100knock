@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 
 # affine
 def affine(img, a, b, c, d, tx, ty):
-	H, W, C = _img.shape
+	H, W, C = img.shape
 
 	# temporary image
-	img = np.zeros((H+2, W+2, C), dtype=np.float32)
-	img[1:H+1, 1:W+1] = _img
+	_img = np.zeros((H+2, W+2, C), dtype=np.float32)
+	_img[1:H+1, 1:W+1] = img
 
 	# get shape of new image
 	H_new = np.round(H).astype(np.int)
@@ -20,7 +20,7 @@ def affine(img, a, b, c, d, tx, ty):
 	x_new = np.tile(np.arange(W_new), (H_new, 1))
 	y_new = np.arange(H_new).repeat(W_new).reshape(H_new, -1)
 
-	# get position of original image by affine
+	# get position of temporary image by affine
 	adbc = a * d - b * c
 	x = np.round((d * x_new  - b * y_new) / adbc).astype(np.int) - tx + 1
 	y = np.round((-c * x_new + a * y_new) / adbc).astype(np.int) - ty + 1
@@ -36,13 +36,13 @@ def affine(img, a, b, c, d, tx, ty):
 	y = np.clip(y, 0, H + 1)
 
 	# assign pixcel
-	out[y_new, x_new] = img[y, x]
+	out[y_new, x_new] = _img[y, x]
 	out = out.astype(np.uint8)
 
 	return out
 
 # Read image
-_img = cv2.imread("imori.jpg").astype(np.float32)
+img = cv2.imread("imori.jpg").astype(np.float32)
 
 
 # Affine

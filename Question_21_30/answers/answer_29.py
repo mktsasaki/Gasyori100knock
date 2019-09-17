@@ -5,11 +5,12 @@ import matplotlib.pyplot as plt
 
 # Affine
 def affine(img, a, b, c, d, tx, ty):
-  	H, W, C = img.shape
+	H, W, C = img.shape
 
 	# temporary image
-	img = np.zeros((H+2, W+2, C), dtype=np.float32)
-	img[1:H+1, 1:W+1] = _img
+	# 外周を(0, 0, 0)で埋めた画像からサンプリング
+	_img = np.zeros((H+2, W+2, C), dtype=np.float32)
+	_img[1:H+1, 1:W+1] = img
 
 	# get new image shape
 	H_new = np.round(H * d).astype(np.int)
@@ -20,7 +21,8 @@ def affine(img, a, b, c, d, tx, ty):
 	x_new = np.tile(np.arange(W_new), (H_new, 1))
 	y_new = np.arange(H_new).repeat(W_new).reshape(H_new, -1)
 
-	# get position of original image by affine
+	# get position of temporary image by affine
+	# x, yの最後の+1は外周のオフセット分
 	adbc = a * d - b * c
 	x = np.round((d * x_new  - b * y_new) / adbc).astype(np.int) - tx + 1
 	y = np.round((-c * x_new + a * y_new) / adbc).astype(np.int) - ty + 1
@@ -29,7 +31,7 @@ def affine(img, a, b, c, d, tx, ty):
 	y = np.minimum(np.maximum(y, 0), H+1).astype(np.int)
 
 	# assgin pixcel to new image
-	out[y_new, x_new] = img[y, x]
+	out[y_new, x_new] = _img[y, x]
 
 	out = out[:H_new, :W_new]
 	out = out.astype(np.uint8)
@@ -38,7 +40,7 @@ def affine(img, a, b, c, d, tx, ty):
 
 
 # Read image
-_img = cv2.imread("imori.jpg").astype(np.float32)
+img = cv2.imread("imori.jpg").astype(np.float32)
 
 # Affine
 out = affine(img, a=1.3, b=0, c=0, d=0.8, tx=30, ty=-30)
